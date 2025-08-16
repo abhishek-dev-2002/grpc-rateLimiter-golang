@@ -18,45 +18,7 @@ This project demonstrates how to implement a **rate-limiting interceptor** in a 
 - [Buf](https://buf.build/docs/installation)
 - [Docker](https://www.docker.com/get-started) (optional, for Redis setup)
 
-## Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/abhishek-dev-2002/grpc-rateLimter-golang.git
-cd grpc-rateLimter-golang
-2. Install Dependencies
-bash
-Copy
-Edit
-go mod tidy
-3. Set Up Redis
-Using Docker
-bash
-Copy
-Edit
-docker run -d -p 6379:6379 --name redis redis
-Manual Installation
-Follow the Redis installation guide for your operating system.
-
-4. Generate gRPC Code
-bash
-Copy
-Edit
-buf generate
-This will generate Go code from service.proto into the pb/ directory.
-
-5. Run the Server
-bash
-Copy
-Edit
-go run cmd/server/main.go
-6. Run the Client
-bash
-Copy
-Edit
-go run cmd/client/main.go
-Rate Limiting Logic
+## Rate Limiting Logic
 Current Implementation
 We are using a fixed window counter approach with Redis — not token bucket.
 
