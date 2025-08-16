@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package pb;
+
+// Point to module root + folder to avoid nested pb
+option go_package = "github.com/abhishek-dev-2002/grpc-rateLimter-golang;pb";
+
+service RateLimiter {
+  rpc CheckRateLimit(RateLimitRequest) returns (RateLimitResponse);
+}
+
+message RateLimitRequest {
+  string token = 1;
+}
+
+message RateLimitResponse {
+  bool allowed = 1;
+  string message = 2;
+}

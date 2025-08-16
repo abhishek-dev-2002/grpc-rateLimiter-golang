@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: grpc-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - grpc-net
+
+  grpc-server:
+    build:
+      context: .
+      dockerfile: ./cmd/server/Dockerfile
+    container_name: grpc-server
+    ports:
+      - "50051:50051"
+    depends_on:
+      - redis
+    networks:
+      - grpc-net
+
+  grpc-client:
+    build:
+      context: .
+      dockerfile: ./cmd/client/Dockerfile
+    container_name: grpc-client
+    depends_on:
+      - grpc-server
+      - redis
+    networks:
+      - grpc-net
+    command: ["./grpc-client"]
+
+networks:
+  grpc-net:
+    driver: bridge

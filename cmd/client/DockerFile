@@ -1,0 +1,25 @@
+# Build stage
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /app
+
+# Copy go.mod and go.sum first
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the entire project
+COPY . .
+
+# Build the client binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o grpc-client ./cmd/client
+
+# Final stage
+FROM alpine:latest
+
+WORKDIR /app
+
+# Copy the client binary
+COPY --from=builder /app/grpc-client .
+
+# Run the client
+CMD ["./grpc-client"]
