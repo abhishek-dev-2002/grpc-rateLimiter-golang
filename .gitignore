@@ -1,0 +1,34 @@
+# Go modules
+/go.sum
+/go.mod
+
+# Go build outputs
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Generated protobuf files
+pb/*.pb.go
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+vendor/
+
+# Temporary files
+*.tmp
+*.log
+
+# Docker
+*.env
+docker-compose.override.yml
