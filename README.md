@@ -20,7 +20,7 @@ This project demonstrates how to implement a **rate-limiting interceptor** in a 
 
 ## Rate Limiting Logic
 Current Implementation
-We are using a fixed window counter approach with Redis — not token bucket.
+We are using a fixed window counter approach with Redis.
 
 How it works:
 
@@ -35,25 +35,13 @@ The Redis key has a TTL of 1 minute, so the counter resets automatically after t
 Key Points:
 
 This method is strict: once the limit is hit, additional requests are blocked until the window resets.
-
-Token Bucket algorithms allow bursts and refill tokens gradually, which is not implemented here.
-
 The approach is simple and works well for basic per-user rate limiting.
 
 Example Flow
 MaxHits = 5 per minute
 
 User sends 7 requests in one minute:
-
-Request	Redis Count	Allowed?
-1	1	✅ Yes
-2	2	✅ Yes
-3	3	✅ Yes
-4	4	✅ Yes
-5	5	✅ Yes
-6	6	❌ No
-7	7	❌ No
-
+So first 7 req within 1 minute will be allowed and rest will be blocked until the counter resets to 0.
 After 1 minute, the Redis key expires, and the counter resets to 0.
 
 How It Works
@@ -67,25 +55,8 @@ Rate Limit Check:
 The Limiter checks Redis for the request count and decides whether to allow or reject the request.
 
 Request Handling:
-
 If allowed: the request proceeds to the gRPC handler.
-
 If rejected: a RateLimitResponse is returned with allowed: false and a descriptive message.
 
 Redis as Backend:
 Redis is used because it supports atomic operations and TTL-based expiry, making it ideal for distributed rate limiting across multiple gRPC server instances.
-
-Docker Setup
-Build and run the Docker container:
-
-bash
-Copy
-Edit
-docker build -t grpc-ratelimiter .
-docker run -p 50051:50051 grpc-ratelimiter
-Testing
-Start the server.
-
-Run the client multiple times.
-
-After exceeding the rate limit, requests will be rejected with an appropriate message.
