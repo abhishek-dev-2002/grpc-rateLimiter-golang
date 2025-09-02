@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project demonstrates how to implement a **rate-limiting interceptor** in a **Go gRPC server**, utilizing **Redis** as the backend counter. The rate limiter restricts users from making more than a specified number of requests per second, enhancing API security and preventing abuse.
+This project demonstrates how to implement a **rate-limiting interceptor** in a **Go gRPC server**, utilizing **Redis** as the backend counter. The rate limiter restricts users from making more than a specified number of requests per minute, enhancing API security and preventing abuse.
 
 ## Features
 
